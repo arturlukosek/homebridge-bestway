@@ -1,20 +1,13 @@
 {
-  "displayName": "Hombedrige Lay-Z-Spa",
-  "name": "homebridge-lay-z-spa",
+  "displayName": "Hombedrige Bestway",
+  "name": "homebridge-bestway-spa",
   "version": "1.1.1",
-  "description": "Homebridge plugin for controlling a lay-z spa whirlpool",
+  "description": "Homebridge plugin for controlling a Bestway spa whirlpool",
   "license": "Apache-2.0",
   "author": "Thomas Helmel <droccahl@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/Droccal/homebridge-lay-z-spa.git"
-  },
-  "funding": {
-    "type" : "paypal",
-    "url" : "https://paypal.me/thomashelmel"
-  },
-  "bugs": {
-    "url": "https://github.com/Droccal/homebridge-lay-z-spa.git/issues"
   },
   "engines": {
     "node": ">=14.18.1",
