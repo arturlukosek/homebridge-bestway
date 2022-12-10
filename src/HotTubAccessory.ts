@@ -185,11 +185,13 @@ export class HotTubAccessory {
     async setOnState (value: CharacteristicValue) {
         this.platform.log.debug('Set Characteristic On ->', value)
         this.currentState.power = value as boolean
-        const targetState = this.currentState.power ? 'turn_on' : 'turn_off'
-        await fetch(this.platform.baseUrl + `gizwits/${targetState}?api_token=${this.platform.apiToken}&did=${this.platform.deviceId}`, {
-            method: 'POST',
-            headers: this.getHeader()
-        })
+        const targetState = this.currentState.power ? 1 : 0
+        await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
+                {
+                    method: 'POST,'
+                    headers: this.getHeader(),
+                  body:JSON.stringify({"attrs": {"power": targetState}})
+                })
         await this.getCurrentStatus(true)
     }
 
@@ -204,10 +206,13 @@ export class HotTubAccessory {
     async setHeatingTargetTemp (value: CharacteristicValue) {
         this.platform.log.debug('Set Characteristic Temperature -> ', value)
         this.currentState.targetTemp = value as number
-        await fetch(this.platform.baseUrl + `gizwits/temp_set?api_token=${this.platform.apiToken}&did=${this.platform.deviceId}&temperature=${this.currentState.targetTemp}`, {
-            method: 'POST',
-            headers: this.getHeader()
-        })
+                const targetState = this.currentState.power ? 1 : 0
+        await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
+                {
+                    method: 'POST,'
+                    headers: this.getHeader(),
+                  body:JSON.stringify({"attrs": {"temp_set": targetState}})
+                })
         await this.getCurrentStatus(true)
     }
 
@@ -227,13 +232,17 @@ export class HotTubAccessory {
         this.platform.log.debug('Set Characteristic Filter and Heating ->', value)
         this.currentState.filterOn = value as boolean
         this.currentState.heatingOn = value as boolean
-        const targetFilterState = this.currentState.heatingOn ? 'turn_filter_on' : 'turn_filter_off'
-        const targetHeatingState = this.currentState.heatingOn ? 'turn_heat_on' : 'turn_heat_off'
+        const targetFilterState = this.currentState.heatingOn ? 1 : 0;
+        const targetHeatingState = this.currentState.heatingOn ? 1 : 0;
 
-        const response = await fetch(this.platform.baseUrl + `gizwits/${targetFilterState}?api_token=${this.platform.apiToken}&did=${this.platform.deviceId}`, {
-            method: 'POST',
-            headers: this.getHeader()
-        })
+                await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
+                {
+                    method: 'POST,'
+                    headers: this.getHeader(),
+                  body:JSON.stringify({"attrs": {"filter_power": targetFilterState,"heat_power":targetHeatingState}})
+                })
+
+        
         if (!response.ok) {
             this.platform.log.error('Could not set filter state, to avoid damage to the whirlpool heating will not be turned on.')
             return
@@ -256,11 +265,13 @@ export class HotTubAccessory {
     async setWaveOnState (value: CharacteristicValue) {
         this.platform.log.debug('Set Characteristic Waves -> ', value)
         this.currentState.wavesOn = value as boolean
-        const targetState = this.currentState.wavesOn ? 'turn_wave_on' : 'turn_wave_off'
-        await fetch(this.platform.baseUrl + `gizwits/${targetState}?api_token=${this.platform.apiToken}&did=${this.platform.deviceId}`, {
-            method: 'POST',
-            headers: this.getHeader()
-        })
+        const targetState = this.currentState.wavesOn ? 1 : 0
+                        await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
+                {
+                    method: 'POST,'
+                    headers: this.getHeader(),
+                  body:JSON.stringify({"attrs": {"wave_power": targetState}})
+                })
         await this.getCurrentStatus(true)
     }
 
@@ -276,19 +287,25 @@ export class HotTubAccessory {
         if (!this.currentState.filterOn && this.currentState.heatingOn) {
             this.currentState.heatingOn = value as boolean
             const targetHeatingState = this.currentState.heatingOn ? 'turn_heat_on' : 'turn_heat_off'
-            const response = await fetch(this.platform.baseUrl + `gizwits/${targetHeatingState}?api_token=${this.platform.apiToken}&did=${this.platform.deviceId}`, {
-                method: 'POST',
-                headers: this.getHeader()
-            })
+            const response =                 await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
+                {
+                    method: 'POST,'
+                    headers: this.getHeader(),
+                  body:JSON.stringify({"attrs": {"heat_power":targetHeatingState}})
+                })
+
             if (!response.ok) {
                 this.platform.log.error('Could not set heating state, to avoid damage to the whirlpool filter will not be turned off.')
                 return
             }
         }
-        await fetch(this.platform.baseUrl + `gizwits/${targetFilterState}?api_token=${this.platform.apiToken}&did=${this.platform.deviceId}`, {
-            method: 'POST',
-            headers: this.getHeader()
-        })
+                        await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
+                {
+                    method: 'POST,'
+                    headers: this.getHeader(),
+                  body:JSON.stringify({"attrs": {"filter_power": targetFilterState}})
+                })
+
         await this.getCurrentStatus(true)
     }
 }
