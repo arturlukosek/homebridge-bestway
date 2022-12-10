@@ -12,7 +12,7 @@ import {PLATFORM_NAME, PLUGIN_NAME} from './settings'
 import {HotTubAccessory} from './HotTubAccessory'
 
 export class LayZSpaWhirlpool implements DynamicPlatformPlugin {
-    public readonly baseUrl: string = 'https://mobileapi.lay-z-spa.co.uk/v1/'
+    public readonly baseUrl: string = 'https://usapi.gizwits.com/app/'
     public readonly Service: typeof Service = this.api.hap.Service
     public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic
 
@@ -46,20 +46,30 @@ public readonly api: API,
 
     async retrieveApiKey (username: string, password: string): Promise<boolean> {
         try {
-            const encoded = encodeURIComponent(username)
-            const response = await fetch(this.baseUrl + `auth/login?email=${encoded}&password=${password}`, {
-                method: 'POST'
+            const body = {"username": username, "password": password, "lang": "en"}
+            const response = await fetch(this.baseUrl + `login`, {
+                method: 'POST',	body: JSON.stringify(body),
+	headers: {'Content-Type': 'application/json',"X-Gizwits-Application-Id":"98754e684ec045528b073876c34c7348"}
+
             })
             if (!response.ok) {
                 this.log.error(`Could not retrieve api key. Status ${response.status}`)
                 return false
             }
 
-            const result = await response.json()
-            this.apiToken = result.data.api_token
-            this.deviceId = result.devices[0].did // TODO: in case of multiple hot tubs create multiple accessory's for each with its individual deviceId
-            this.log.info('Successfully retrieved api token')
+            const result = await response.json();
+            this.apiToken = result.token;
+            this.userId = result.uid;
+            this.expiresAt = result.expire_at;
+            const dResponse = await fetch(this.baseUrl + `bindings`, {
+                method: 'GET',
+	headers: {'X-Gizwits-User-token': this.apiToken,,"X-Gizwits-Application-Id":"98754e684ec045528b073876c34c7348"}
 
+            })
+            const devices = await dResponse.json();
+
+            this.deviceId = result.devices[0].did
+            this.log.info('Successfully retrieved api token')
             return true
         } catch (e) {
             this.log.error('Something went wrong while trying to retrieve api key', e)
