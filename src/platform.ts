@@ -63,7 +63,7 @@ public readonly api: API,
             this.expiresAt = result.expire_at;
             const dResponse = await fetch(this.baseUrl + `bindings`, {
                 method: 'GET',
-	headers: {'X-Gizwits-User-token': this.apiToken,,"X-Gizwits-Application-Id":"98754e684ec045528b073876c34c7348"}
+	headers: {'X-Gizwits-User-token': this.apiToken,"X-Gizwits-Application-Id":"98754e684ec045528b073876c34c7348"}
 
             })
             const devices = await dResponse.json();
