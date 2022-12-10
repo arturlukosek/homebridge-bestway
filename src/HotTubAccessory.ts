@@ -120,9 +120,9 @@ export class HotTubAccessory {
 
     getHeader (): Headers {
         const h = new Headers()
-        h.set('Content-Type', 'application/x-www-form-urlencoded')
-        h.set('X-Requested-With', 'com.wiltonbradley.layzspa')
-        h.set('User-Agent', 'Mozilla/5.0 (Linux; Android 7.1.2; SM-G930L Build/N2G48H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/75.0.3770.143 Mobile Safari/537.36)')
+        h.set('Content-Type', 'application/json; charset=UTF-8')
+        h.set('X-Gizwits-User-token', this.platform.apiToken)
+        h.set('X-Gizwits-Application-Id', '98754e684ec045528b073876c34c7348')
         return h
     }
 
@@ -132,17 +132,17 @@ export class HotTubAccessory {
             return this.currentState
         }
         try {
-            const response = await fetch(this.platform.baseUrl + `gizwits/status?api_token=${this.platform.apiToken}&did=${this.platform.deviceId}`,
+            const response = await fetch(this.platform.baseUrl + `devdata/${this.platform.deviceId}/latest`,
                 {
-                    method: 'POST',
-                    headers: this.getHeader()
+                    method: 'GET,'
+                    headers: this.getHeader(),
                 })
             if (!response.ok) {
                 this.platform.log.error(`Could not retrieve device status. Status ${response.status}`)
                 return this.currentState
             }
             const result = await response.json()
-            if (result.data.attr.power === undefined) {
+            if (result.attr.power === undefined) {
                 this.platform.log.debug('Hottub seems to be not connected, therefore api returned nothing - setting default values')
                 this.currentState.power = false
                 this.currentState.currentTemp = 25
@@ -152,12 +152,12 @@ export class HotTubAccessory {
                 this.currentState.wavesOn = false
                 this.currentState.lastFetch = new Date()
             } else {
-                this.currentState.power = result.data.attr.power as boolean
-                this.currentState.currentTemp = result.data.attr.temp_now
-                this.currentState.targetTemp = result.data.attr.temp_set
-                this.currentState.heatingOn = result.data.attr.heat_power as boolean
-                this.currentState.filterOn = result.data.attr.filter_power as boolean
-                this.currentState.wavesOn = result.data.attr.wave_power as boolean
+                this.currentState.power = result.attr.power as boolean
+                this.currentState.currentTemp = result.attr.temp_now
+                this.currentState.targetTemp = result.attr.temp_set
+                this.currentState.heatingOn = result.attr.heat_power as boolean
+                this.currentState.filterOn = result.attr.filter_power as boolean
+                this.currentState.wavesOn = result.attr.wave_power as boolean
                 this.currentState.lastFetch = new Date()
             }
 
