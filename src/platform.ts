@@ -67,8 +67,8 @@ public readonly api: API,
 
             })
             const devices = await dResponse.json();
-
-            this.deviceId = result.devices[0].did
+            this.log.info(devices)
+            this.deviceId = devices.devices[0].did
             this.log.info('Successfully retrieved api token')
             return true
         } catch (e) {
