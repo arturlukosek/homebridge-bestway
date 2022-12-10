@@ -134,7 +134,7 @@ export class HotTubAccessory {
         try {
             const response = await fetch(this.platform.baseUrl + `devdata/${this.platform.deviceId}/latest`,
                 {
-                    method: 'GET,'
+                    method: 'GET',
                     headers: this.getHeader(),
                 })
             if (!response.ok) {
@@ -188,7 +188,7 @@ export class HotTubAccessory {
         const targetState = this.currentState.power ? 1 : 0
         await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
                 {
-                    method: 'POST,'
+                    method: 'POST',
                     headers: this.getHeader(),
                   body:JSON.stringify({"attrs": {"power": targetState}})
                 })
@@ -209,7 +209,7 @@ export class HotTubAccessory {
                 const targetState = this.currentState.power ? 1 : 0
         await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
                 {
-                    method: 'POST,'
+                    method: 'POST',
                     headers: this.getHeader(),
                   body:JSON.stringify({"attrs": {"temp_set": targetState}})
                 })
@@ -237,7 +237,7 @@ export class HotTubAccessory {
 
                 await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
                 {
-                    method: 'POST,'
+                    method: 'POST',
                     headers: this.getHeader(),
                   body:JSON.stringify({"attrs": {"filter_power": targetFilterState,"heat_power":targetHeatingState}})
                 })
@@ -268,7 +268,7 @@ export class HotTubAccessory {
         const targetState = this.currentState.wavesOn ? 1 : 0
                         await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
                 {
-                    method: 'POST,'
+                    method: 'POST',
                     headers: this.getHeader(),
                   body:JSON.stringify({"attrs": {"wave_power": targetState}})
                 })
@@ -289,7 +289,7 @@ export class HotTubAccessory {
             const targetHeatingState = this.currentState.heatingOn ? 'turn_heat_on' : 'turn_heat_off'
             const response =                 await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
                 {
-                    method: 'POST,'
+                    method: 'POST',
                     headers: this.getHeader(),
                   body:JSON.stringify({"attrs": {"heat_power":targetHeatingState}})
                 })
@@ -301,7 +301,7 @@ export class HotTubAccessory {
         }
                         await fetch(this.platform.baseUrl + `control/${this.platform.deviceId}`,
                 {
-                    method: 'POST,'
+                    method: 'POST',
                     headers: this.getHeader(),
                   body:JSON.stringify({"attrs": {"filter_power": targetFilterState}})
                 })
