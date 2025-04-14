@@ -1,6 +1,6 @@
 {
   "displayName": "Hombedrige Bestway",
-  "name": "homebridge-bestway",
+  "name": "homebridge-bestway-spa",
   "version": "1.1.1",
   "description": "Homebridge plugin for controlling a Bestway spa whirlpool",
   "license": "Apache-2.0",
