@@ -1,10 +1,10 @@
 {
   "displayName": "Hombedrige Bestway",
-  "name": "homebridge-bestway-spa",
+  "name": "homebridge-bestway",
   "version": "1.1.1",
   "description": "Homebridge plugin for controlling a Bestway spa whirlpool",
   "license": "Apache-2.0",
-  "author": "Anthony Anise",
+  "author": "Artur Lukosek",
   "repository": {
     "type": "git",
     "url": "https://github.com/Droccal/homebridge-lay-z-spa.git"
